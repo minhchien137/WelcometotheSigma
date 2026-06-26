@@ -7,14 +7,14 @@ namespace WelcometotheSigma.Controllers;
 public class AdminController : Controller
 {
     private readonly IDisplayConfigService _cfgService;
-    private readonly IVipQueueService _vipQueueService;
-    private readonly IWebHostEnvironment _env;
+    private readonly IVipScheduleService   _scheduleService;
+    private readonly IWebHostEnvironment   _env;
 
-    public AdminController(IDisplayConfigService cfgService, IVipQueueService vipQueueService, IWebHostEnvironment env)
+    public AdminController(IDisplayConfigService cfgService, IVipScheduleService scheduleService, IWebHostEnvironment env)
     {
-        _cfgService = cfgService;
-        _vipQueueService = vipQueueService;
-        _env = env;
+        _cfgService      = cfgService;
+        _scheduleService = scheduleService;
+        _env             = env;
     }
 
     public IActionResult Index() => View();
@@ -26,8 +26,7 @@ public class AdminController : Controller
     public IActionResult SaveConfig([FromBody] DisplayConfig config)
     {
         if (config is null)
-            return BadRequest(new { success = false, message = "Invalid payload" });
-
+            return Json(new { success = false, message = "Invalid payload" });
         try
         {
             _cfgService.Save(config);
@@ -35,50 +34,75 @@ public class AdminController : Controller
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { success = false, message = ex.Message });
+            return Json(new { success = false, message = ex.Message });
         }
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetVipEmployees()
+    public async Task<IActionResult> GetVipGuests()
     {
-        try
-        {
-            var list = await _vipQueueService.GetVipEmployeesAsync();
-            return Json(list);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { success = false, message = ex.Message });
-        }
+        try { return Json(await _scheduleService.GetVipGuestsAsync()); }
+        catch (Exception ex) { return Json(new { success = false, message = ex.Message }); }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetSchedules()
+    {
+        try { return Json(await _scheduleService.GetSchedulesAsync()); }
+        catch (Exception ex) { return Json(new { success = false, message = ex.Message }); }
     }
 
     [HttpPost]
-    public async Task<IActionResult> UploadVipPhoto([FromForm] string empCode, IFormFile photo)
+    public async Task<IActionResult> SaveSchedule([FromBody] SaveScheduleRequest req)
     {
-        if (string.IsNullOrWhiteSpace(empCode) || photo == null || photo.Length == 0)
-            return BadRequest(new { success = false, message = "Thiếu dữ liệu" });
-
+        if (req == null || req.GuestId <= 0 || string.IsNullOrEmpty(req.StartTime) || string.IsNullOrEmpty(req.EndTime))
+            return Json(new { success = false, message = "Thiếu dữ liệu" });
         try
         {
-            var employees = await _vipQueueService.GetVipEmployeesAsync();
-            var emp = employees.FirstOrDefault(e => e.EmpCode == empCode);
-            if (emp == null)
-                return NotFound(new { success = false, message = "Không tìm thấy nhân viên" });
-            if (string.IsNullOrEmpty(emp.Photo))
-                return BadRequest(new { success = false, message = "Nhân viên chưa có tên file ảnh trong database (cột photo trống)" });
+            var id = await _scheduleService.SaveScheduleAsync(req);
+            return Json(new { success = true, id });
+        }
+        catch (Exception ex) { return Json(new { success = false, message = ex.Message }); }
+    }
 
-            var fileName = Path.GetFileName(emp.Photo);
+    [HttpPost]
+    public async Task<IActionResult> DeleteSchedule(int id)
+    {
+        try
+        {
+            await _scheduleService.DeleteScheduleAsync(id);
+            return Json(new { success = true });
+        }
+        catch (Exception ex) { return Json(new { success = false, message = ex.Message }); }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UploadWelcomeImage([FromForm] int guestId, IFormFile photo)
+    {
+        if (guestId <= 0 || photo == null || photo.Length == 0)
+            return Json(new { success = false, message = "Thiếu dữ liệu" });
+        try
+        {
+            var guests = await _scheduleService.GetVipGuestsAsync();
+            var guest  = guests.FirstOrDefault(g => g.Id == guestId);
+            if (guest == null)
+                return Json(new { success = false, message = "Không tìm thấy khách VIP" });
+
+            var safeName = new string(guest.GuestName
+                .Select(c => char.IsLetterOrDigit(c) || c == '_' || c == '-' ? c : '_')
+                .ToArray()).Trim('_');
+            var ext      = Path.GetExtension(photo.FileName).ToLowerInvariant();
+            if (string.IsNullOrEmpty(ext)) ext = ".jpg";
+            var fileName = $"{safeName}{ext}";
             var savePath = Path.Combine(_env.WebRootPath, "images", fileName);
 
             await using var stream = new FileStream(savePath, FileMode.Create);
             await photo.CopyToAsync(stream);
 
+            await _scheduleService.UpdateGuestImageAsync(guestId, fileName);
+
             return Json(new { success = true, message = $"Đã lưu ảnh: {fileName}", fileName });
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { success = false, message = ex.Message });
-        }
+        catch (Exception ex) { return Json(new { success = false, message = ex.Message }); }
     }
 }

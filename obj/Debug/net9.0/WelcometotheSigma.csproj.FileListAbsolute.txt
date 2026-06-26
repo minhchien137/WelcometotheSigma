@@ -290,3 +290,4 @@ C:/WelcometotheSigma/bin/Debug/net9.0/App_Data/display-config.json
 /Users/pm/Coldzy/WelcometotheSigma/bin/Debug/net9.0/publish/WelcometotheSigma.deps.json
 /Users/pm/Coldzy/WelcometotheSigma/bin/Debug/net9.0/publish/WelcometotheSigma.runtimeconfig.json
 /Users/pm/Coldzy/WelcometotheSigma/bin/Debug/net9.0/publish/WelcometotheSigma.staticwebassets.endpoints.json
+/Users/pm/Coldzy/WelcometotheSigma/obj/Debug/net9.0/WelcometotheSigma.sourcelink.json

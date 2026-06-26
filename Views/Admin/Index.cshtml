@@ -19,26 +19,17 @@
             --gray3:  #a1a1aa;
             --white:  #ffffff;
             --radius: 8px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
         }
 
         html, body {
             height: 100%; overflow: hidden;
             font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 14px;
-            color: var(--black);
-            background: var(--gray);
+            font-size: 14px; color: var(--black); background: var(--gray);
         }
 
-        /* ── Layout ── */
-        .layout {
-            display: grid;
-            grid-template-columns: 360px 1fr;
-            grid-template-rows: 100vh;
-            height: 100vh;
-        }
+        .layout { display: grid; grid-template-columns: 360px 1fr; height: 100vh; }
 
-        /* ════════════ SIDEBAR ════════════ */
+        /* ── Sidebar ── */
         .sidebar {
             display: flex; flex-direction: column;
             background: var(--white);
@@ -46,447 +37,232 @@
             box-shadow: 2px 0 12px rgba(0,0,0,0.06);
             z-index: 10;
         }
-
         .sb-head {
             display: flex; align-items: center; gap: 12px;
-            padding: 18px 20px;
-            border-bottom: 1px solid var(--gray2);
-            flex-shrink: 0;
+            padding: 18px 20px; border-bottom: 1px solid var(--gray2); flex-shrink: 0;
         }
         .sb-head img { height: 40px; width: auto; }
-        .sb-head-text {}
-        .sb-head-title { font-size: 15px; font-weight: 700; color: var(--black); }
-        .sb-head-sub   { font-size: 11px; color: var(--gray3); letter-spacing: 0.04em; }
-
-        .sb-body {
-            flex: 1; overflow-y: auto; padding: 12px 0;
-        }
+        .sb-head-title { font-size: 15px; font-weight: 700; }
+        .sb-head-sub   { font-size: 11px; color: var(--gray3); }
+        .sb-body { flex: 1; overflow-y: auto; padding: 12px 0; }
         .sb-body::-webkit-scrollbar { width: 4px; }
         .sb-body::-webkit-scrollbar-thumb { background: var(--gray2); border-radius: 2px; }
 
         /* Section */
         .section { margin-bottom: 4px; }
-
         .section-head {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 20px;
-            cursor: pointer;
-            user-select: none;
-            color: var(--black);
-            font-weight: 600;
-            font-size: 12px;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
+            padding: 10px 20px; cursor: pointer; user-select: none;
+            font-weight: 600; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
             transition: background 0.15s;
         }
         .section-head:hover { background: var(--gray); }
         .section-icon { font-size: 14px; margin-right: 8px; }
         .section-chevron { font-size: 10px; color: var(--gray3); transition: transform 0.2s; }
         .section.open .section-chevron { transform: rotate(90deg); }
-        .section-body {
-            padding: 0 20px 12px;
-            display: none;
-        }
+        .section-body { padding: 0 20px 12px; display: none; }
         .section.open .section-body { display: block; }
 
         /* Form controls */
         .field { margin-bottom: 14px; }
         .field:last-child { margin-bottom: 0; }
-
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 500;
-            color: #52525b;
-            margin-bottom: 5px;
-        }
+        label { display: block; font-size: 12px; font-weight: 500; color: #52525b; margin-bottom: 5px; }
 
         input[type="text"],
-        input[type="number"] {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid var(--gray2);
-            border-radius: var(--radius);
-            font-size: 13px;
-            outline: none;
+        input[type="time"],
+        select.vip-select {
+            width: 100%; padding: 8px 10px;
+            border: 1px solid var(--gray2); border-radius: var(--radius);
+            font-size: 13px; outline: none; background: var(--white);
             transition: border-color 0.15s, box-shadow 0.15s;
-            background: var(--white);
         }
         input[type="text"]:focus,
-        input[type="number"]:focus {
-            border-color: var(--red);
-            box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
+        input[type="time"]:focus,
+        select.vip-select:focus {
+            border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,0.1);
+        }
+        select.vip-select {
+            cursor: pointer; appearance: none; -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a1a1aa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
         }
 
-        /* Color row */
-        .color-row {
-            display: flex; align-items: center; gap: 8px;
-        }
+        .color-row { display: flex; align-items: center; gap: 8px; }
         input[type="color"] {
-            width: 36px; height: 36px;
-            border: 1px solid var(--gray2);
-            border-radius: 6px;
-            padding: 2px;
-            cursor: pointer;
-            background: var(--white);
-            flex-shrink: 0;
+            width: 36px; height: 36px; border: 1px solid var(--gray2); border-radius: 6px;
+            padding: 2px; cursor: pointer; background: var(--white); flex-shrink: 0;
         }
         .color-hex {
-            flex: 1;
-            padding: 8px 10px;
-            border: 1px solid var(--gray2);
-            border-radius: var(--radius);
-            font-size: 13px;
-            font-family: 'Consolas', monospace;
-            outline: none;
+            flex: 1; padding: 8px 10px; border: 1px solid var(--gray2); border-radius: var(--radius);
+            font-size: 13px; font-family: 'Consolas', monospace; outline: none;
         }
         .color-hex:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,0.1); }
 
-        /* Slider */
-        .slider-row {
-            display: flex; align-items: center; gap: 10px;
-        }
+        .slider-row { display: flex; align-items: center; gap: 10px; }
         input[type="range"] {
-            flex: 1;
-            height: 4px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: var(--gray2);
-            border-radius: 2px;
-            outline: none;
-            cursor: pointer;
+            flex: 1; height: 4px; -webkit-appearance: none; appearance: none;
+            background: var(--gray2); border-radius: 2px; outline: none; cursor: pointer;
         }
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px; height: 16px;
-            border-radius: 50%;
-            background: var(--red);
-            cursor: pointer;
-            transition: transform 0.15s;
+            -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+            background: var(--red); cursor: pointer; transition: transform 0.15s;
         }
         input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         .slider-val {
-            min-width: 38px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--red);
-            text-align: right;
-            font-family: 'Consolas', monospace;
+            min-width: 38px; font-size: 12px; font-weight: 600; color: var(--red);
+            text-align: right; font-family: 'Consolas', monospace;
         }
 
-        /* Toggle switch */
+        .field-sep { height: 1px; background: var(--gray2); margin: 12px 0; }
+
+        /* ── Toggle ── */
         .toggle-row { display: flex; align-items: center; justify-content: space-between; }
-        .toggle-label { font-size: 13px; color: var(--black); }
-        .toggle {
-            position: relative;
-            width: 42px; height: 24px;
-        }
+        .toggle-label { font-size: 13px; }
+        .toggle { position: relative; width: 42px; height: 24px; }
         .toggle input { opacity: 0; width: 0; height: 0; }
         .toggle-track {
-            position: absolute; inset: 0;
-            background: var(--gray2);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background 0.2s;
+            position: absolute; inset: 0; background: var(--gray2); border-radius: 12px;
+            cursor: pointer; transition: background 0.2s;
         }
         .toggle-track::after {
-            content: '';
-            position: absolute;
-            left: 3px; top: 3px;
-            width: 18px; height: 18px;
-            border-radius: 50%;
-            background: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-            transition: transform 0.2s;
+            content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px;
+            border-radius: 50%; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: transform 0.2s;
         }
         .toggle input:checked + .toggle-track { background: var(--red); }
         .toggle input:checked + .toggle-track::after { transform: translateX(18px); }
 
-        /* Radio group */
-        .radio-group {
-            display: flex; gap: 8px;
+        /* ── Upload zone ── */
+        .upload-zone {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; padding: 18px; border: 2px dashed var(--gray2); border-radius: var(--radius);
+            cursor: pointer; transition: border-color 0.15s, background 0.15s; text-align: center;
         }
-        .radio-btn {
-            flex: 1;
+        .upload-zone:hover { border-color: var(--red); background: rgba(200,16,46,0.03); }
+        .upload-zone-icon { font-size: 22px; }
+        .upload-zone-text { font-size: 13px; font-weight: 500; }
+        .upload-zone-hint { font-size: 11px; color: var(--gray3); }
+        .upload-preview {
+            width: 100%; max-height: 110px; object-fit: contain;
+            border-radius: var(--radius); border: 1px solid var(--gray2); background: var(--gray);
+        }
+        .guest-current-img {
+            width: 100%; height: 72px; object-fit: cover;
+            border-radius: var(--radius); border: 1px solid var(--gray2);
+            margin-bottom: 8px; display: none;
+        }
+
+        .btn-upload, .btn-save-sched {
+            width: 100%; padding: 10px; background: var(--red); color: white;
+            border: none; border-radius: var(--radius); font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: background 0.15s, transform 0.1s;
+        }
+        .btn-upload:hover, .btn-save-sched:hover { background: var(--red-dk); }
+        .btn-upload:active, .btn-save-sched:active { transform: scale(0.98); }
+        .btn-upload:disabled, .btn-save-sched:disabled { opacity: 0.6; pointer-events: none; }
+
+        /* ── Time row ── */
+        .time-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+        /* ── Schedule list ── */
+        .sched-list { display: flex; flex-direction: column; gap: 8px; }
+        .sched-item {
+            background: var(--gray); border-radius: var(--radius);
+            border: 1px solid var(--gray2); padding: 10px 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .sched-item-left { flex: 1; min-width: 0; }
+        .sched-name { font-size: 13px; font-weight: 600; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sched-time { font-size: 11px; color: var(--gray3); font-family: 'Consolas', monospace; margin-top: 2px; }
+        .sched-badge {
+            font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px;
+            letter-spacing: 0.04em; flex-shrink: 0;
+        }
+        .sched-badge.on  { background: rgba(21,128,61,0.1); color: #15803d; }
+        .sched-badge.off { background: rgba(161,161,170,0.2); color: var(--gray3); }
+        .btn-del {
+            width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--gray2);
+            background: transparent; cursor: pointer; font-size: 13px;
             display: flex; align-items: center; justify-content: center;
-            padding: 7px 4px;
-            border: 1.5px solid var(--gray2);
-            border-radius: var(--radius);
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-            user-select: none;
+            flex-shrink: 0; transition: border-color 0.15s, color 0.15s;
         }
-        .radio-btn input { display: none; }
-        .radio-btn.selected {
-            border-color: var(--red);
-            background: rgba(200,16,46,0.06);
-            color: var(--red);
-        }
+        .btn-del:hover { border-color: var(--red); color: var(--red); }
 
-        /* Divider */
-        .field-sep {
-            height: 1px;
-            background: var(--gray2);
-            margin: 12px 0;
-        }
-
-        /* Sidebar footer */
+        /* ── Sidebar footer ── */
         .sb-foot {
-            padding: 16px 20px;
-            border-top: 1px solid var(--gray2);
-            flex-shrink: 0;
-            display: flex; flex-direction: column; gap: 8px;
+            padding: 16px 20px; border-top: 1px solid var(--gray2);
+            flex-shrink: 0; display: flex; flex-direction: column; gap: 8px;
         }
-
         .btn-save {
-            width: 100%;
-            padding: 12px;
-            background: var(--red);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            cursor: pointer;
-            transition: background 0.15s, transform 0.1s;
+            width: 100%; padding: 12px; background: var(--red); color: white;
+            border: none; border-radius: var(--radius); font-size: 14px; font-weight: 700;
+            cursor: pointer; transition: background 0.15s, transform 0.1s;
         }
         .btn-save:hover  { background: var(--red-dk); }
         .btn-save:active { transform: scale(0.98); }
         .btn-save.saving { opacity: 0.7; pointer-events: none; }
-
         .btn-open {
-            display: block; width: 100%; text-align: center;
-            padding: 9px;
-            border: 1.5px solid var(--gray2);
-            border-radius: var(--radius);
-            font-size: 13px;
-            color: var(--black);
-            text-decoration: none;
+            display: block; width: 100%; text-align: center; padding: 9px;
+            border: 1.5px solid var(--gray2); border-radius: var(--radius);
+            font-size: 13px; color: var(--black); text-decoration: none;
             transition: border-color 0.15s, color 0.15s;
         }
         .btn-open:hover { border-color: var(--red); color: var(--red); }
 
-        .pos-group-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--red);
-            margin-bottom: 8px;
-        }
-
-        .btn-reset-pos {
-            width: 100%;
-            padding: 7px;
-            border: 1.5px solid var(--gray2);
-            border-radius: var(--radius);
-            background: transparent;
-            font-size: 12px;
-            color: var(--gray3);
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .btn-reset-pos:hover { border-color: var(--red); color: var(--red); }
-
-        /* ════════════ VIP PHOTO UPLOAD ════════════ */
-        .vip-select {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid var(--gray2);
-            border-radius: var(--radius);
-            font-size: 13px;
-            outline: none;
-            background: var(--white);
-            cursor: pointer;
-            transition: border-color 0.15s, box-shadow 0.15s;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a1a1aa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            padding-right: 28px;
-        }
-        .vip-select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,0.1); }
-
-        .upload-zone {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            padding: 18px;
-            border: 2px dashed var(--gray2);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: border-color 0.15s, background 0.15s;
-            text-align: center;
-        }
-        .upload-zone:hover { border-color: var(--red); background: rgba(200,16,46,0.03); }
-        .upload-zone-icon { font-size: 22px; }
-        .upload-zone-text { font-size: 13px; font-weight: 500; color: var(--black); }
-        .upload-zone-hint { font-size: 11px; color: var(--gray3); }
-
-        .upload-preview {
-            width: 100%;
-            max-height: 110px;
-            object-fit: contain;
-            border-radius: var(--radius);
-            border: 1px solid var(--gray2);
-            background: var(--gray);
-        }
-
-        .btn-upload {
-            width: 100%;
-            padding: 10px;
-            background: var(--red);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.15s, transform 0.1s;
-        }
-        .btn-upload:hover  { background: var(--red-dk); }
-        .btn-upload:active { transform: scale(0.98); }
-        .btn-upload:disabled { opacity: 0.6; pointer-events: none; }
-
-        /* ════════════ MAIN / PREVIEW ════════════ */
-        .main-area {
-            display: flex; flex-direction: column;
-            overflow: hidden;
-        }
-
+        /* ══ Main / Preview ══ */
+        .main-area { display: flex; flex-direction: column; overflow: hidden; }
         .preview-bar {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 24px;
-            background: var(--white);
-            border-bottom: 1px solid var(--gray2);
-            flex-shrink: 0;
+            display: flex; align-items: center; gap: 12px; padding: 12px 24px;
+            background: var(--white); border-bottom: 1px solid var(--gray2); flex-shrink: 0;
         }
-        .pv-bar-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--black);
-            flex-shrink: 0;
-        }
-        .pv-tabs {
-            display: flex;
-            background: var(--gray);
-            border-radius: 7px;
-            padding: 3px;
-            gap: 2px;
-        }
-        .pv-tab {
-            padding: 5px 14px;
-            border: none;
-            border-radius: 5px;
-            background: transparent;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            color: var(--gray3);
-            transition: all 0.15s;
-        }
-        .pv-tab.active {
-            background: var(--white);
-            color: var(--black);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+        .pv-bar-title { font-size: 13px; font-weight: 600; }
         .pv-bar-spacer { flex: 1; }
-        .pv-resolution {
-            font-size: 11px;
-            color: var(--gray3);
-            font-family: 'Consolas', monospace;
-        }
+        .pv-resolution { font-size: 11px; color: var(--gray3); font-family: 'Consolas', monospace; }
 
-        /* Preview stage */
         .preview-stage {
-            flex: 1; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
+            flex: 1; overflow: hidden; display: flex; align-items: center; justify-content: center;
             background: #e8e8ea;
             background-image:
-                linear-gradient(45deg, #ddd 25%, transparent 25%),
-                linear-gradient(-45deg, #ddd 25%, transparent 25%),
-                linear-gradient(45deg, transparent 75%, #ddd 75%),
-                linear-gradient(-45deg, transparent 75%, #ddd 75%);
+                linear-gradient(45deg,#ddd 25%,transparent 25%),
+                linear-gradient(-45deg,#ddd 25%,transparent 25%),
+                linear-gradient(45deg,transparent 75%,#ddd 75%),
+                linear-gradient(-45deg,transparent 75%,#ddd 75%);
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
             position: relative;
         }
-
         .pv-shadow-wrap {
             box-shadow: 0 8px 48px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.12);
-            border-radius: 4px;
-            overflow: hidden;
-            position: absolute;
-            top: 0; left: 0;
-            transform-origin: top left;
+            border-radius: 4px; overflow: hidden; position: absolute;
+            top: 0; left: 0; transform-origin: top left;
         }
-
-        /* ── The 1280×720 welcome-screen replica ── */
         .pv-canvas {
-            width:  1280px;
-            height: 720px;
-            position: relative;
-            overflow: hidden;
-            font-family: Georgia, 'Times New Roman', serif;
+            width: 1280px; height: 720px; position: relative; overflow: hidden;
+            font-family: 'Segoe UI', sans-serif; background: #fff;
         }
-
-        .pv-screen { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; }
-
-        /* corners */
+        .pv-screen {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 22px;
+        }
         .pv-corner { position: absolute; width: 48px; height: 48px; }
-        .pv-corner.tl { top:14px; left:14px;  border-top: 3px solid var(--pv-corner,#C8102E); border-left:  3px solid var(--pv-corner,#C8102E); }
-        .pv-corner.tr { top:14px; right:14px; border-top: 3px solid var(--pv-corner,#C8102E); border-right: 3px solid var(--pv-corner,#C8102E); }
-        .pv-corner.bl { bottom:14px; left:14px; border-bottom: 3px solid var(--pv-corner,#C8102E); border-left: 3px solid var(--pv-corner,#C8102E); }
-        .pv-corner.br { bottom:14px; right:14px; border-bottom: 3px solid var(--pv-corner,#C8102E); border-right: 3px solid var(--pv-corner,#C8102E); }
-
-        /* IDLE */
-        .pv-logo     { height: 80px; width: auto; object-fit: contain; }
-        .pv-divider  { height: 2px; width: 260px; background: linear-gradient(90deg, transparent, #C8102E, transparent); }
-        .pv-idle-title { font-size: 22px; letter-spacing: 0.5em; text-transform: uppercase; font-family: 'Segoe UI', sans-serif; font-weight: 300; color: #1a1a1a; }
-        .pv-idle-sub   { font-size: 14px; letter-spacing: 0.35em; text-transform: uppercase; font-family: 'Segoe UI', sans-serif; color: #C8102E; }
-
-        /* GUEST */
-        .pv-g-header { display: flex; align-items: center; gap: 14px; }
-        .pv-g-logo { height: 44px; }
-        .pv-g-sep  { width: 2px; height: 40px; background: #C8102E; }
-        .pv-brand-name { font-size: 20px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Segoe UI', sans-serif; line-height: 1; }
-        .pv-brand-sub  { font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; font-family: 'Segoe UI', sans-serif; color: #C8102E; margin-top: 3px; }
-        .pv-welcome    { font-size: 28px; letter-spacing: 0.28em; text-transform: uppercase; font-family: 'Segoe UI', sans-serif; font-weight: 300; text-align: center; color: #C8102E; }
-        .pv-avatar-wrap { position: relative; width: 150px; height: 150px; }
-        .pv-ring-pulse { position: absolute; inset: -10px; border-radius: 50%; border: 2px solid rgba(200,16,46,0.3); }
-        .pv-ring-spin  { position: absolute; inset: -5px;  border-radius: 50%; border: 3px solid transparent; border-top-color: #C8102E; border-right-color: rgba(200,16,46,0.25); }
-        .pv-avatar     { width: 100%; height: 100%; border-radius: 50%; background: #1a1a1a; border: 4px solid #fff; box-shadow: 0 0 0 2px #C8102E; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 700; color: #C8102E; font-family: 'Segoe UI'; }
-        .pv-orn        { display: flex; align-items: center; gap: 10px; }
-        .pv-orn-line   { width: 110px; height: 1px; background: linear-gradient(90deg, transparent, #C8102E); }
-        .pv-orn-line.r { background: linear-gradient(90deg, #C8102E, transparent); }
-        .pv-orn-dot    { width: 8px; height: 8px; background: #C8102E; transform: rotate(45deg); flex-shrink: 0; }
-        .pv-name  { font-size: 52px; font-weight: 700; color: #1a1a1a; text-align: center; line-height: 1.1; }
-        .pv-name .accent { color: #C8102E; }
-        .pv-area  { font-size: 16px; color: #666; letter-spacing: 0.2em; text-transform: uppercase; font-family: 'Segoe UI'; }
+        .pv-corner.tl { top:14px; left:14px;   border-top:3px solid #C8102E; border-left:3px solid #C8102E; }
+        .pv-corner.tr { top:14px; right:14px;  border-top:3px solid #C8102E; border-right:3px solid #C8102E; }
+        .pv-corner.bl { bottom:14px; left:14px;  border-bottom:3px solid #C8102E; border-left:3px solid #C8102E; }
+        .pv-corner.br { bottom:14px; right:14px; border-bottom:3px solid #C8102E; border-right:3px solid #C8102E; }
+        .pv-logo    { height: 80px; width: auto; object-fit: contain; }
+        .pv-divider { height: 2px; width: 260px; background: linear-gradient(90deg,transparent,#C8102E,transparent); }
+        .pv-idle-title { font-size: 22px; letter-spacing: 0.5em; text-transform: uppercase; font-weight: 300; color: #1a1a1a; }
+        .pv-idle-sub   { font-size: 14px; letter-spacing: 0.35em; text-transform: uppercase; color: #C8102E; }
 
         /* ── Toast ── */
         .toast {
-            position: fixed;
-            bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-            background: #18181b; color: #fff;
-            padding: 10px 24px;
-            border-radius: 24px;
-            font-size: 13px;
-            font-weight: 500;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+            background: #18181b; color: #fff; padding: 10px 24px; border-radius: 24px;
+            font-size: 13px; font-weight: 500; box-shadow: 0 4px 16px rgba(0,0,0,0.25);
             transition: transform 0.3s cubic-bezier(.22,.68,0,1.2), opacity 0.3s;
-            opacity: 0;
-            z-index: 999;
-            pointer-events: none;
+            opacity: 0; z-index: 999; pointer-events: none;
         }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .toast.error { background: #C8102E; }
+        .toast.show  { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.error { background: var(--red); }
     </style>
 </head>
 <body>
@@ -496,7 +272,7 @@
     <aside class="sidebar">
         <div class="sb-head">
             <img src="/images/logo.jpg" alt="Logo" />
-            <div class="sb-head-text">
+            <div>
                 <div class="sb-head-title">Cài đặt giao diện</div>
                 <div class="sb-head-sub">Welcome Screen Admin</div>
             </div>
@@ -504,280 +280,116 @@
 
         <div class="sb-body">
 
-            <!-- 1. Văn bản -->
-            <div class="section open" id="sec-text">
-                <div class="section-head" onclick="toggleSection('sec-text')">
-                    <span><span class="section-icon">📝</span>Văn bản</span>
+            <!-- 1. Màn hình chờ -->
+            <div class="section open" id="sec-idle">
+                <div class="section-head" onclick="toggleSection('sec-idle')">
+                    <span><span class="section-icon">🖥</span>Màn hình chờ</span>
                     <span class="section-chevron">▶</span>
                 </div>
                 <div class="section-body">
                     <div class="field">
-                        <label>Chữ chào mừng</label>
-                        <input type="text" id="c-welcomeText" />
-                    </div>
-                    <div class="field">
-                        <label>Tiêu đề màn hình chờ</label>
+                        <label>Tiêu đề</label>
                         <input type="text" id="c-idleTitle" />
                     </div>
                     <div class="field">
-                        <label>Phụ đề màn hình chờ</label>
+                        <label>Phụ đề</label>
                         <input type="text" id="c-idleSubtitle" />
                     </div>
+                    <div class="field">
+                        <label>Cỡ chữ tiêu đề</label>
+                        <div class="slider-row">
+                            <input type="range" id="c-idleTitleSizePx" min="12" max="48" step="1" />
+                            <span class="slider-val" id="c-idleTitleSizePx-val">22px</span>
+                        </div>
+                    </div>
                     <div class="field-sep"></div>
-                    <div class="field">
-                        <label>Tên thương hiệu</label>
-                        <input type="text" id="c-brandName" />
-                    </div>
-                    <div class="field">
-                        <label>Phụ đề thương hiệu</label>
-                        <input type="text" id="c-brandSubtitle" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. Màu sắc -->
-            <div class="section open" id="sec-color">
-                <div class="section-head" onclick="toggleSection('sec-color')">
-                    <span><span class="section-icon">🎨</span>Màu sắc</span>
-                    <span class="section-chevron">▶</span>
-                </div>
-                <div class="section-body">
                     <div class="field">
                         <label>Màu nền</label>
                         <div class="color-row">
-                            <input type="color" id="c-backgroundColor-picker" />
-                            <input type="text"  id="c-backgroundColor" class="color-hex" maxlength="7" />
+                            <input type="color" id="c-backgroundColor-picker" value="#ffffff" />
+                            <input type="text"  id="c-backgroundColor" class="color-hex" maxlength="7" value="#ffffff" />
                         </div>
                     </div>
                     <div class="field">
-                        <label>Màu chữ chào mừng</label>
+                        <label>Màu đường kẻ &amp; viền góc</label>
                         <div class="color-row">
-                            <input type="color" id="c-welcomeTextColor-picker" />
-                            <input type="text"  id="c-welcomeTextColor" class="color-hex" maxlength="7" />
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Màu tên khách</label>
-                        <div class="color-row">
-                            <input type="color" id="c-guestNameColor-picker" />
-                            <input type="text"  id="c-guestNameColor" class="color-hex" maxlength="7" />
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Màu nhấn (từ cuối tên)</label>
-                        <div class="color-row">
-                            <input type="color" id="c-guestNameAccentColor-picker" />
-                            <input type="text"  id="c-guestNameAccentColor" class="color-hex" maxlength="7" />
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Màu viền góc &amp; ornament</label>
-                        <div class="color-row">
-                            <input type="color" id="c-cornerBorderColor-picker" />
-                            <input type="text"  id="c-cornerBorderColor" class="color-hex" maxlength="7" />
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Màu vòng avatar</label>
-                        <div class="color-row">
-                            <input type="color" id="c-avatarRingColor-picker" />
-                            <input type="text"  id="c-avatarRingColor" class="color-hex" maxlength="7" />
+                            <input type="color" id="c-dividerColor-picker" value="#C8102E" />
+                            <input type="text"  id="c-dividerColor" class="color-hex" maxlength="7" value="#C8102E" />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. Cỡ chữ -->
-            <div class="section" id="sec-size">
-                <div class="section-head" onclick="toggleSection('sec-size')">
-                    <span><span class="section-icon">🔤</span>Cỡ chữ</span>
-                    <span class="section-chevron">▶</span>
-                </div>
-                <div class="section-body">
-                    <div class="field">
-                        <label>Chữ chào mừng</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-welcomeTextSizePx" min="14" max="60" step="1" />
-                            <span class="slider-val" id="c-welcomeTextSizePx-val"></span>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Tên khách</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-guestNameSizePx" min="24" max="100" step="2" />
-                            <span class="slider-val" id="c-guestNameSizePx-val"></span>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Tiêu đề màn hình chờ</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-idleTitleSizePx" min="12" max="48" step="1" />
-                            <span class="slider-val" id="c-idleTitleSizePx-val"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. Thời gian -->
-            <div class="section" id="sec-time">
-                <div class="section-head" onclick="toggleSection('sec-time')">
-                    <span><span class="section-icon">⏱</span>Thời gian</span>
-                    <span class="section-chevron">▶</span>
-                </div>
-                <div class="section-body">
-                    <div class="field">
-                        <label>Thời gian hiển thị khách</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-displayDurationSeconds" min="3" max="30" step="1" />
-                            <span class="slider-val" id="c-displayDurationSeconds-val"></span>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Tần suất kiểm tra (polling)</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-pollIntervalSeconds" min="1" max="15" step="1" />
-                            <span class="slider-val" id="c-pollIntervalSeconds-val"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. Hiệu ứng -->
-            <div class="section" id="sec-fx">
-                <div class="section-head" onclick="toggleSection('sec-fx')">
-                    <span><span class="section-icon">✨</span>Hiệu ứng</span>
-                    <span class="section-chevron">▶</span>
-                </div>
-                <div class="section-body">
-                    <div class="field">
-                        <div class="toggle-row">
-                            <span class="toggle-label">Pháo hoa khi chào</span>
-                            <label class="toggle">
-                                <input type="checkbox" id="c-showFireworks" />
-                                <span class="toggle-track"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Cường độ pháo hoa</label>
-                        <div class="radio-group">
-                            <label class="radio-btn" id="rb-low">
-                                <input type="radio" name="fwIntensity" value="low" /> Thấp
-                            </label>
-                            <label class="radio-btn" id="rb-medium">
-                                <input type="radio" name="fwIntensity" value="medium" /> Trung bình
-                            </label>
-                            <label class="radio-btn" id="rb-high">
-                                <input type="radio" name="fwIntensity" value="high" /> Cao
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 6. Vị trí -->
-            <div class="section" id="sec-pos">
-                <div class="section-head" onclick="toggleSection('sec-pos')">
-                    <span><span class="section-icon">📍</span>Vị trí</span>
-                    <span class="section-chevron">▶</span>
-                </div>
-                <div class="section-body">
-                    <div class="pos-group-label">Màn hình chào khách</div>
-                    <div class="field">
-                        <label>Toàn bộ nội dung — dọc (Y)</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-guestContentOffsetY" min="-300" max="300" step="5" />
-                            <span class="slider-val" id="c-guestContentOffsetY-val"></span>
-                        </div>
-                    </div>
-                    <div class="field-sep"></div>
-                    <div class="pos-group-label">Chữ chào mừng</div>
-                    <div class="field">
-                        <label>Ngang (X)</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-welcomeTextOffsetX" min="-500" max="500" step="5" />
-                            <span class="slider-val" id="c-welcomeTextOffsetX-val"></span>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Dọc (Y)</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-welcomeTextOffsetY" min="-300" max="300" step="5" />
-                            <span class="slider-val" id="c-welcomeTextOffsetY-val"></span>
-                        </div>
-                    </div>
-                    <div class="field-sep"></div>
-                    <div class="pos-group-label">Avatar (ảnh khách)</div>
-                    <div class="field">
-                        <label>Ngang (X)</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-avatarOffsetX" min="-500" max="500" step="5" />
-                            <span class="slider-val" id="c-avatarOffsetX-val"></span>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Dọc (Y)</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-avatarOffsetY" min="-300" max="300" step="5" />
-                            <span class="slider-val" id="c-avatarOffsetY-val"></span>
-                        </div>
-                    </div>
-                    <div class="field-sep"></div>
-                    <div class="pos-group-label">Tên khách</div>
-                    <div class="field">
-                        <label>Ngang (X)</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-guestNameOffsetX" min="-500" max="500" step="5" />
-                            <span class="slider-val" id="c-guestNameOffsetX-val"></span>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Dọc (Y)</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-guestNameOffsetY" min="-300" max="300" step="5" />
-                            <span class="slider-val" id="c-guestNameOffsetY-val"></span>
-                        </div>
-                    </div>
-                    <div class="field-sep"></div>
-                    <div class="pos-group-label">Màn hình chờ (Idle)</div>
-                    <div class="field">
-                        <label>Toàn bộ nội dung — dọc (Y)</label>
-                        <div class="slider-row">
-                            <input type="range" id="c-idleContentOffsetY" min="-300" max="300" step="5" />
-                            <span class="slider-val" id="c-idleContentOffsetY-val"></span>
-                        </div>
-                    </div>
-                    <div class="field" style="margin-top:10px">
-                        <button class="btn-reset-pos" onclick="resetPositions()">↺ Đặt lại vị trí mặc định</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7. Upload ảnh VIP -->
+            <!-- 2. Ảnh chào mừng -->
             <div class="section" id="sec-photo">
                 <div class="section-head" onclick="toggleSection('sec-photo')">
-                    <span><span class="section-icon">📷</span>Upload ảnh VIP</span>
+                    <span><span class="section-icon">🖼</span>Ảnh chào mừng</span>
                     <span class="section-chevron">▶</span>
                 </div>
                 <div class="section-body">
                     <div class="field">
                         <label>Chọn khách VIP</label>
-                        <select id="vip-emp-select" class="vip-select">
+                        <select id="photo-guest-select" class="vip-select" onchange="onPhotoGuestChange()">
                             <option value="">-- Đang tải danh sách... --</option>
                         </select>
                     </div>
+                    <img id="guest-current-img" class="guest-current-img" alt="Ảnh hiện tại" />
                     <div class="field">
-                        <label>Ảnh đại diện</label>
-                        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('vip-photo-input').click()">
+                        <label>Upload ảnh nền mới</label>
+                        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('photo-input').click()">
                             <div class="upload-zone-icon">📁</div>
                             <div class="upload-zone-text">Nhấp để chọn ảnh</div>
-                            <div class="upload-zone-hint">JPG · PNG · WEBP</div>
+                            <div class="upload-zone-hint">JPG · PNG · WEBP — fill full màn hình</div>
                         </div>
-                        <img id="vip-photo-preview" class="upload-preview" style="display:none" alt="Xem trước" />
-                        <input type="file" id="vip-photo-input" accept="image/*" style="display:none" />
+                        <img id="photo-preview" class="upload-preview" style="display:none" alt="Xem trước" />
+                        <input type="file" id="photo-input" accept="image/*" style="display:none" />
                     </div>
                     <div class="field">
-                        <button class="btn-upload" id="btn-upload" onclick="uploadVipPhoto()">⬆ Upload ảnh</button>
+                        <button class="btn-upload" id="btn-upload" onclick="uploadPhoto()">⬆ Upload ảnh</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Thời gian hiển thị -->
+            <div class="section" id="sec-sched">
+                <div class="section-head" onclick="toggleSection('sec-sched')">
+                    <span><span class="section-icon">⏰</span>Thời gian hiển thị</span>
+                    <span class="section-chevron">▶</span>
+                </div>
+                <div class="section-body">
+                    <div class="field">
+                        <label>Chọn khách VIP</label>
+                        <select id="sched-guest-select" class="vip-select">
+                            <option value="">-- Chọn khách --</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <div class="time-row">
+                            <div>
+                                <label>Từ</label>
+                                <input type="time" id="sched-start" value="08:00" />
+                            </div>
+                            <div>
+                                <label>Đến</label>
+                                <input type="time" id="sched-end" value="09:00" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="toggle-row">
+                            <span class="toggle-label">Kích hoạt</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="sched-active" checked />
+                                <span class="toggle-track"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <button class="btn-save-sched" onclick="saveSchedule()">+ Thêm lịch</button>
+                    </div>
+                    <div class="field-sep"></div>
+                    <div id="sched-list" class="sched-list">
+                        <div style="font-size:12px;color:var(--gray3);text-align:center;padding:8px 0">Đang tải...</div>
                     </div>
                 </div>
             </div>
@@ -785,33 +397,22 @@
         </div><!-- /sb-body -->
 
         <div class="sb-foot">
-            <button class="btn-save" id="btn-save" onclick="saveConfig()">
-                Lưu &amp; Áp dụng
-            </button>
-            <a href="/Welcome" target="_blank" class="btn-open">
-                Mở màn hình chào mừng ↗
-            </a>
+            <button class="btn-save" id="btn-save" onclick="saveConfig()">Lưu &amp; Áp dụng</button>
+            <a href="/Welcome" target="_blank" class="btn-open">Mở màn hình chào mừng ↗</a>
         </div>
     </aside>
 
     <!-- ═══════════ MAIN / PREVIEW ═══════════ -->
     <main class="main-area">
         <div class="preview-bar">
-            <span class="pv-bar-title">Xem trước</span>
-            <div class="pv-tabs">
-                <button class="pv-tab active" id="tab-idle"  onclick="switchTab('idle')">🖥 Màn hình chờ</button>
-                <button class="pv-tab"        id="tab-guest" onclick="switchTab('guest')">👤 Chào khách</button>
-            </div>
+            <span class="pv-bar-title">Xem trước — Màn hình chờ</span>
             <div class="pv-bar-spacer"></div>
             <span class="pv-resolution">1280 × 720</span>
         </div>
-
         <div class="preview-stage" id="preview-stage">
             <div class="pv-shadow-wrap" id="pv-shadow-wrap">
                 <div class="pv-canvas" id="pv-canvas">
-
-                    <!-- IDLE SCREEN -->
-                    <div class="pv-screen" id="pv-idle">
+                    <div class="pv-screen">
                         <div class="pv-corner tl"></div>
                         <div class="pv-corner tr"></div>
                         <div class="pv-corner bl"></div>
@@ -821,87 +422,28 @@
                         <div class="pv-idle-title" id="pv-idle-title">Hệ thống chào mừng</div>
                         <div class="pv-idle-sub"   id="pv-idle-sub">VIP Welcome System</div>
                     </div>
-
-                    <!-- GUEST SCREEN -->
-                    <div class="pv-screen" id="pv-guest" style="display:none">
-                        <div class="pv-corner tl"></div>
-                        <div class="pv-corner tr"></div>
-                        <div class="pv-corner bl"></div>
-                        <div class="pv-corner br"></div>
-
-                        <div class="pv-g-header">
-                            <img src="/images/logo.jpg" class="pv-g-logo" alt="Logo" />
-                            <div class="pv-g-sep" id="pv-g-sep"></div>
-                            <div>
-                                <div class="pv-brand-name" id="pv-brand-name">Sigma</div>
-                                <div class="pv-brand-sub"  id="pv-brand-sub">VIP Welcome</div>
-                            </div>
-                        </div>
-
-                        <div class="pv-welcome" id="pv-welcome">✦  Kính chào Quý Khách  ✦</div>
-
-                        <div class="pv-avatar-wrap">
-                            <div class="pv-ring-pulse" id="pv-ring-pulse"></div>
-                            <div class="pv-ring-spin"  id="pv-ring-spin"></div>
-                            <div class="pv-avatar"     id="pv-avatar">VK</div>
-                        </div>
-
-                        <div class="pv-orn">
-                            <div class="pv-orn-line"   id="pv-orn-l"></div>
-                            <div class="pv-orn-dot"    id="pv-orn-dot"></div>
-                            <div class="pv-orn-line r" id="pv-orn-r"></div>
-                        </div>
-
-                        <div class="pv-name" id="pv-name">
-                            Nguyễn Văn <span class="accent" id="pv-name-accent">Sếp</span>
-                        </div>
-                        <div class="pv-area">Giám đốc điều hành · CEO</div>
-                    </div>
-
-                </div><!-- /pv-canvas -->
-            </div><!-- /pv-shadow-wrap -->
-        </div><!-- /preview-stage -->
+                </div>
+            </div>
+        </div>
     </main>
 
-</div><!-- /layout -->
-
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
-/* ══════════════════════════════════════════
-   State
-══════════════════════════════════════════ */
-let cfg = {};
-let currentTab = 'idle';
+let cfg       = {};
+let vipGuests = [];
+let schedules = [];
 
-/* ══════════════════════════════════════════
-   Accordion
-══════════════════════════════════════════ */
-function toggleSection(id) {
-    document.getElementById(id).classList.toggle('open');
-}
+/* ── Accordion ── */
+function toggleSection(id) { document.getElementById(id).classList.toggle('open'); }
 
-/* ══════════════════════════════════════════
-   Tab switch
-══════════════════════════════════════════ */
-function switchTab(tab) {
-    currentTab = tab;
-    document.getElementById('pv-idle').style.display  = tab === 'idle'  ? 'flex' : 'none';
-    document.getElementById('pv-guest').style.display = tab === 'guest' ? 'flex' : 'none';
-    document.getElementById('tab-idle').classList.toggle('active',  tab === 'idle');
-    document.getElementById('tab-guest').classList.toggle('active', tab === 'guest');
-}
-
-/* ══════════════════════════════════════════
-   Scale preview to fit stage
-══════════════════════════════════════════ */
+/* ── Scale preview ── */
 function scalePreview() {
-    const stage  = document.getElementById('preview-stage');
-    const wrap   = document.getElementById('pv-shadow-wrap');
+    const stage = document.getElementById('preview-stage');
+    const wrap  = document.getElementById('pv-shadow-wrap');
     const pw = 1280, ph = 720, pad = 40;
-    const sx = (stage.clientWidth  - pad) / pw;
-    const sy = (stage.clientHeight - pad) / ph;
-    const s  = Math.min(sx, sy);
+    const s  = Math.min((stage.clientWidth - pad) / pw, (stage.clientHeight - pad) / ph);
     const ox = (stage.clientWidth  - pw * s) / 2;
     const oy = (stage.clientHeight - ph * s) / 2;
     wrap.style.width     = pw + 'px';
@@ -912,392 +454,281 @@ function scalePreview() {
 }
 window.addEventListener('resize', scalePreview);
 
-/* ══════════════════════════════════════════
-   Color picker ↔ hex input sync
-══════════════════════════════════════════ */
-const colorFields = [
-    'backgroundColor', 'welcomeTextColor', 'guestNameColor',
-    'guestNameAccentColor', 'cornerBorderColor', 'avatarRingColor'
-];
-
+/* ── Color sync ── */
 function initColorSync() {
-    colorFields.forEach(key => {
+    ['backgroundColor', 'dividerColor'].forEach(key => {
         const picker = document.getElementById(`c-${key}-picker`);
         const hex    = document.getElementById(`c-${key}`);
         if (!picker || !hex) return;
-
-        picker.addEventListener('input', () => {
-            hex.value = picker.value;
-            cfg[key]  = picker.value;
-            updatePreview();
-        });
+        picker.addEventListener('input', () => { hex.value = picker.value; cfg[key] = picker.value; updatePreview(); });
         hex.addEventListener('input', () => {
             const v = hex.value.trim();
-            if (/^#[0-9a-fA-F]{6}$/.test(v)) {
-                picker.value = v;
-                cfg[key]     = v;
-                updatePreview();
-            }
+            if (/^#[0-9a-fA-F]{6}$/.test(v)) { picker.value = v; cfg[key] = v; updatePreview(); }
         });
     });
 }
 
-/* ══════════════════════════════════════════
-   Slider value display
-══════════════════════════════════════════ */
-const sliderFields = [
-    { id: 'welcomeTextSizePx',      unit: 'px' },
-    { id: 'guestNameSizePx',        unit: 'px' },
-    { id: 'idleTitleSizePx',        unit: 'px' },
-    { id: 'displayDurationSeconds', unit: 's'  },
-    { id: 'pollIntervalSeconds',     unit: 's'  },
-    // Positions
-    { id: 'guestContentOffsetY', unit: 'px' },
-    { id: 'welcomeTextOffsetX',  unit: 'px' },
-    { id: 'welcomeTextOffsetY',  unit: 'px' },
-    { id: 'avatarOffsetX',       unit: 'px' },
-    { id: 'avatarOffsetY',       unit: 'px' },
-    { id: 'guestNameOffsetX',    unit: 'px' },
-    { id: 'guestNameOffsetY',    unit: 'px' },
-    { id: 'idleContentOffsetY',  unit: 'px' },
-];
-
+/* ── Slider ── */
 function initSliders() {
-    sliderFields.forEach(({ id, unit }) => {
-        const el  = document.getElementById(`c-${id}`);
-        const val = document.getElementById(`c-${id}-val`);
-        if (!el || !val) return;
-        el.addEventListener('input', () => {
-            val.textContent = el.value + unit;
-            cfg[id] = Number(el.value);
-            updatePreview();
-        });
+    const el  = document.getElementById('c-idleTitleSizePx');
+    const val = document.getElementById('c-idleTitleSizePx-val');
+    if (!el || !val) return;
+    el.addEventListener('input', () => {
+        val.textContent = el.value + 'px';
+        cfg.idleTitleSizePx = Number(el.value);
+        updatePreview();
     });
 }
 
-/* ══════════════════════════════════════════
-   Text inputs
-══════════════════════════════════════════ */
-const textFields = ['welcomeText', 'idleTitle', 'idleSubtitle', 'brandName', 'brandSubtitle'];
-
+/* ── Text inputs ── */
 function initTextInputs() {
-    textFields.forEach(key => {
+    ['idleTitle', 'idleSubtitle'].forEach(key => {
         const el = document.getElementById(`c-${key}`);
         if (!el) return;
-        el.addEventListener('input', () => {
-            cfg[key] = el.value;
-            updatePreview();
-        });
+        el.addEventListener('input', () => { cfg[key] = el.value; updatePreview(); });
     });
 }
 
-/* ══════════════════════════════════════════
-   Radio buttons
-══════════════════════════════════════════ */
-function initRadios() {
-    document.querySelectorAll('input[name="fwIntensity"]').forEach(r => {
-        r.addEventListener('change', () => {
-            cfg.fireworksIntensity = r.value;
-            highlightRadio(r.value);
-        });
-    });
-}
-
-function highlightRadio(val) {
-    ['low','medium','high'].forEach(v => {
-        document.getElementById(`rb-${v}`).classList.toggle('selected', v === val);
-    });
-}
-
-/* ══════════════════════════════════════════
-   Toggle
-══════════════════════════════════════════ */
-function initToggle() {
-    const el = document.getElementById('c-showFireworks');
-    el.addEventListener('change', () => {
-        cfg.showFireworks = el.checked;
-    });
-}
-
-/* ══════════════════════════════════════════
-   Populate form from cfg
-══════════════════════════════════════════ */
+/* ── Populate form ── */
 function populateForm() {
-    // Text
-    textFields.forEach(k => {
-        const el = document.getElementById(`c-${k}`);
-        if (el) el.value = cfg[k] ?? '';
+    const t = document.getElementById('c-idleTitle');
+    const s = document.getElementById('c-idleSubtitle');
+    if (t) t.value = cfg.idleTitle    || '';
+    if (s) s.value = cfg.idleSubtitle || '';
+
+    const sz  = document.getElementById('c-idleTitleSizePx');
+    const szv = document.getElementById('c-idleTitleSizePx-val');
+    if (sz)  sz.value       = cfg.idleTitleSizePx || 22;
+    if (szv) szv.textContent = (cfg.idleTitleSizePx || 22) + 'px';
+
+    [['backgroundColor','#ffffff'], ['dividerColor','#C8102E']].forEach(([k, def]) => {
+        const p = document.getElementById(`c-${k}-picker`);
+        const h = document.getElementById(`c-${k}`);
+        const v = cfg[k] || def;
+        if (p) p.value = v;
+        if (h) h.value = v;
     });
-    // Colors
-    colorFields.forEach(k => {
-        const picker = document.getElementById(`c-${k}-picker`);
-        const hex    = document.getElementById(`c-${k}`);
-        const v      = cfg[k] ?? '#C8102E';
-        if (picker) picker.value = v;
-        if (hex)    hex.value    = v;
-    });
-    // Sliders
-    sliderFields.forEach(({ id, unit }) => {
-        const el  = document.getElementById(`c-${id}`);
-        const val = document.getElementById(`c-${id}-val`);
-        if (el)  el.value       = cfg[id] ?? el.min;
-        if (val) val.textContent = (cfg[id] ?? el?.min ?? '') + unit;
-    });
-    // Toggle
-    const fw = document.getElementById('c-showFireworks');
-    if (fw) fw.checked = cfg.showFireworks !== false;
-    // Radio
-    highlightRadio(cfg.fireworksIntensity || 'medium');
-    const r = document.querySelector(`input[name="fwIntensity"][value="${cfg.fireworksIntensity || 'medium'}"]`);
-    if (r) r.checked = true;
 }
 
-/* ══════════════════════════════════════════
-   Live preview update
-══════════════════════════════════════════ */
-function css(el, styles) {
-    if (!el) return;
-    Object.assign(el.style, styles);
-}
-
+/* ── Update preview ── */
 function updatePreview() {
-    const c = cfg;
-    const bg = c.backgroundColor || '#fff';
-    const accent = c.cornerBorderColor || '#C8102E';
+    const c      = cfg;
+    const bg     = c.backgroundColor || '#fff';
+    const accent = c.dividerColor    || '#C8102E';
 
-    // Background
-    document.getElementById('pv-canvas').style.background = bg;
+    const canvas = document.getElementById('pv-canvas');
+    if (canvas) canvas.style.background = bg;
 
-    // Corners
-    document.querySelectorAll('.pv-corner.tl, .pv-corner.tr').forEach(el => {
-        el.style.borderTopColor  = accent;
-        el.style.borderLeftColor = el.classList.contains('tl') ? accent : '';
-        el.style.borderRightColor = el.classList.contains('tr') ? accent : '';
-    });
-    document.querySelectorAll('.pv-corner.bl, .pv-corner.br').forEach(el => {
-        el.style.borderBottomColor = accent;
-        el.style.borderLeftColor   = el.classList.contains('bl') ? accent : '';
-        el.style.borderRightColor  = el.classList.contains('br') ? accent : '';
+    document.querySelectorAll('.pv-corner').forEach(el => {
+        const isTL = el.classList.contains('tl'), isTR = el.classList.contains('tr');
+        const isBL = el.classList.contains('bl'), isBR = el.classList.contains('br');
+        if (isTL || isTR) el.style.borderTopColor    = accent;
+        if (isBL || isBR) el.style.borderBottomColor = accent;
+        if (isTL || isBL) el.style.borderLeftColor   = accent;
+        if (isTR || isBR) el.style.borderRightColor  = accent;
     });
 
-    // Idle
-    css(document.getElementById('pv-divider'),    { background: `linear-gradient(90deg,transparent,${accent},transparent)` });
-    css(document.getElementById('pv-idle-title'), { fontSize: (c.idleTitleSizePx || 22)+'px', color: c.guestNameColor || '#1a1a1a' });
-    css(document.getElementById('pv-idle-sub'),   { color: c.welcomeTextColor || '#C8102E' });
+    const div = document.getElementById('pv-divider');
+    if (div) div.style.background = `linear-gradient(90deg,transparent,${accent},transparent)`;
 
-    const idleTitle = document.getElementById('pv-idle-title');
-    const idleSub   = document.getElementById('pv-idle-sub');
-    if (idleTitle) idleTitle.textContent = c.idleTitle || 'Hệ thống chào mừng';
-    if (idleSub)   idleSub.textContent   = c.idleSubtitle || 'VIP Welcome System';
-
-    // Guest header
-    const pvBrandName = document.getElementById('pv-brand-name');
-    const pvBrandSub  = document.getElementById('pv-brand-sub');
-    const pvGSep      = document.getElementById('pv-g-sep');
-    if (pvBrandName) pvBrandName.textContent = c.brandName || 'Sigma';
-    if (pvBrandSub)  { pvBrandSub.textContent = c.brandSubtitle || 'VIP Welcome'; pvBrandSub.style.color = accent; }
-    if (pvGSep)      pvGSep.style.background = accent;
-
-    // Welcome text
-    const pvWelcome = document.getElementById('pv-welcome');
-    if (pvWelcome) {
-        pvWelcome.textContent = c.welcomeText || '✦  Kính chào Quý Khách  ✦';
-        pvWelcome.style.color    = c.welcomeTextColor || '#C8102E';
-        pvWelcome.style.fontSize = (c.welcomeTextSizePx || 28) + 'px';
+    const title = document.getElementById('pv-idle-title');
+    if (title) {
+        title.textContent  = c.idleTitle || 'Hệ thống chào mừng';
+        title.style.fontSize = (c.idleTitleSizePx || 22) + 'px';
+        title.style.color    = '#1a1a1a';
     }
 
-    // Avatar ring
-    const ringColor = c.avatarRingColor || '#C8102E';
-    css(document.getElementById('pv-ring-pulse'), { borderColor: `rgba(${hexToRgb(ringColor)},0.3)` });
-    css(document.getElementById('pv-ring-spin'),  { borderTopColor: ringColor, borderRightColor: `rgba(${hexToRgb(ringColor)},0.25)` });
-    css(document.getElementById('pv-avatar'),     { boxShadow: `0 0 0 2px ${ringColor}`, color: ringColor });
-
-    // Ornament
-    const ornColor = accent;
-    css(document.getElementById('pv-orn-l'),   { background: `linear-gradient(90deg,transparent,${ornColor})` });
-    css(document.getElementById('pv-orn-r'),   { background: `linear-gradient(90deg,${ornColor},transparent)` });
-    css(document.getElementById('pv-orn-dot'), { background: ornColor });
-
-    // Guest name
-    const pvName       = document.getElementById('pv-name');
-    const pvNameAccent = document.getElementById('pv-name-accent');
-    if (pvName)       pvName.style.fontSize   = (c.guestNameSizePx || 52) + 'px';
-    if (pvName)       pvName.style.color      = c.guestNameColor || '#1a1a1a';
-    if (pvNameAccent) pvNameAccent.style.color = c.guestNameAccentColor || '#C8102E';
-
-    // ── Positions ──
-    // Guest content block
-    const pvGuestScreen = document.getElementById('pv-guest');
-    if (pvGuestScreen) {
-        pvGuestScreen.style.transform = `translateY(${c.guestContentOffsetY || 0}px)`;
-        pvGuestScreen.style.alignItems = 'center';
+    const sub = document.getElementById('pv-idle-sub');
+    if (sub) {
+        sub.textContent = c.idleSubtitle || 'VIP Welcome System';
+        sub.style.color = accent;
     }
-    // Welcome text
-    if (pvWelcome) pvWelcome.style.transform = `translate(${c.welcomeTextOffsetX||0}px, ${c.welcomeTextOffsetY||0}px)`;
-    // Avatar
-    const pvAvatar = document.querySelector('#pv-guest .pv-avatar-wrap');
-    if (pvAvatar) pvAvatar.style.transform = `translate(${c.avatarOffsetX||0}px, ${c.avatarOffsetY||0}px)`;
-    // Guest name
-    if (pvName) pvName.style.transform = `translate(${c.guestNameOffsetX||0}px, ${c.guestNameOffsetY||0}px)`;
-    // Idle content block
-    const pvIdleScreen = document.getElementById('pv-idle');
-    if (pvIdleScreen) pvIdleScreen.style.transform = `translateY(${c.idleContentOffsetY||0}px)`;
 }
 
-function hexToRgb(hex) {
-    const r = parseInt(hex.slice(1,3),16);
-    const g = parseInt(hex.slice(3,5),16);
-    const b = parseInt(hex.slice(5,7),16);
-    return isNaN(r) ? '200,16,46' : `${r},${g},${b}`;
-}
-
-/* ══════════════════════════════════════════
-   Save config
-══════════════════════════════════════════ */
+/* ── Save config ── */
 async function saveConfig() {
     const btn = document.getElementById('btn-save');
-    btn.textContent = 'Đang lưu...';
-    btn.classList.add('saving');
+    btn.textContent = 'Đang lưu...'; btn.classList.add('saving');
     try {
-        const res = await fetch('/Admin/SaveConfig', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        const res  = await fetch('/Admin/SaveConfig', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(cfg),
         });
-        let data;
-        try { data = await res.json(); } catch { data = { success: false, message: `HTTP ${res.status}` }; }
-        if (data.success) {
-            showToast('✓  Lưu thành công — giao diện đã được cập nhật', false);
-        } else {
-            showToast(`✕  Lưu thất bại: ${data.message || res.status}`, true);
-        }
-    } catch (e) {
-        showToast(`✕  Lỗi kết nối: ${e.message}`, true);
-    } finally {
-        btn.textContent = 'Lưu & Áp dụng';
-        btn.classList.remove('saving');
-    }
+        const data = await res.json().catch(() => ({ success: false }));
+        if (data.success) showToast('✓  Lưu thành công', false);
+        else showToast(`✕  Lỗi: ${data.message || res.status}`, true);
+    } catch (e) { showToast(`✕  Lỗi kết nối: ${e.message}`, true); }
+    finally { btn.textContent = 'Lưu & Áp dụng'; btn.classList.remove('saving'); }
 }
 
-/* ══════════════════════════════════════════
-   Toast
-══════════════════════════════════════════ */
+/* ── Toast ── */
 let toastTimer;
 function showToast(msg, isError) {
     const el = document.getElementById('toast');
     el.textContent = msg;
-    el.className = 'toast show' + (isError ? ' error' : '');
+    el.className   = 'toast show' + (isError ? ' error' : '');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-/* ══════════════════════════════════════════
-   Reset positions
-══════════════════════════════════════════ */
-function resetPositions() {
-    const posKeys = ['guestContentOffsetY','welcomeTextOffsetX','welcomeTextOffsetY',
-                     'avatarOffsetX','avatarOffsetY','guestNameOffsetX','guestNameOffsetY','idleContentOffsetY'];
-    posKeys.forEach(k => {
-        cfg[k] = 0;
-        const el  = document.getElementById(`c-${k}`);
-        const val = document.getElementById(`c-${k}-val`);
-        if (el)  el.value       = 0;
-        if (val) val.textContent = '0px';
-    });
-    updatePreview();
-}
-
-/* ══════════════════════════════════════════
-   Load config & init
-══════════════════════════════════════════ */
-async function init() {
+/* ══════════ VIP Guests ══════════ */
+async function loadVipGuests() {
     try {
-        const res = await fetch('/Admin/Config');
-        cfg = await res.json();
-    } catch {
-        cfg = {};
-    }
-    populateForm();
-    initColorSync();
-    initSliders();
-    initTextInputs();
-    initRadios();
-    initToggle();
-    updatePreview();
-    scalePreview();
+        const res  = await fetch('/Admin/GetVipGuests');
+        const data = await res.json().catch(() => null);
+        if (!data || !Array.isArray(data)) {
+            showToast('✕  Không tải được danh sách khách' + (data?.message ? ': ' + data.message : ''), true);
+            return;
+        }
+        vipGuests = data;
+        const photoSel = document.getElementById('photo-guest-select');
+        const schedSel = document.getElementById('sched-guest-select');
+        const fill = (sel, ph) => {
+            sel.innerHTML = `<option value="">${ph}</option>`;
+            vipGuests.forEach(g => {
+                const o = document.createElement('option');
+                o.value = g.id; o.textContent = g.guestName; sel.appendChild(o);
+            });
+        };
+        fill(photoSel, '-- Chọn khách VIP --');
+        fill(schedSel, '-- Chọn khách --');
+    } catch (e) { showToast('✕  Lỗi tải danh sách: ' + e.message, true); }
 }
 
-init();
-
-/* ══════════════════════════════════════════
-   VIP Photo Upload
-══════════════════════════════════════════ */
-async function loadVipEmployees() {
-    const sel = document.getElementById('vip-emp-select');
-    try {
-        const res = await fetch('/Admin/GetVipEmployees');
-        const list = await res.json();
-        sel.innerHTML = '<option value="">-- Chọn khách VIP --</option>';
-        list.forEach(e => {
-            const opt = document.createElement('option');
-            opt.value = e.empCode;
-            opt.textContent = e.displayName;
-            sel.appendChild(opt);
-        });
-    } catch {
-        sel.innerHTML = '<option value="">-- Không tải được danh sách --</option>';
+function onPhotoGuestChange() {
+    const guestId = Number(document.getElementById('photo-guest-select').value);
+    const guest   = vipGuests.find(g => g.id === guestId);
+    const imgEl   = document.getElementById('guest-current-img');
+    if (guest && guest.imageFileName) {
+        imgEl.src = `/images/${guest.imageFileName}?t=${Date.now()}`;
+        imgEl.style.display = 'block';
+    } else {
+        imgEl.style.display = 'none';
     }
+    document.getElementById('photo-preview').style.display = 'none';
+    document.getElementById('upload-zone').style.display   = 'flex';
+    document.getElementById('photo-input').value           = '';
 }
 
-document.getElementById('vip-photo-input').addEventListener('change', function () {
-    const file = this.files[0];
-    if (!file) return;
-    const preview = document.getElementById('vip-photo-preview');
-    const zone    = document.getElementById('upload-zone');
-    const reader  = new FileReader();
+document.getElementById('photo-input').addEventListener('change', function () {
+    const file = this.files[0]; if (!file) return;
+    const reader = new FileReader();
     reader.onload = ev => {
-        preview.src          = ev.target.result;
-        preview.style.display = 'block';
-        zone.style.display   = 'none';
+        const p = document.getElementById('photo-preview');
+        p.src = ev.target.result; p.style.display = 'block';
+        document.getElementById('upload-zone').style.display = 'none';
     };
     reader.readAsDataURL(file);
 });
 
-async function uploadVipPhoto() {
-    const empCode   = document.getElementById('vip-emp-select').value;
-    const fileInput = document.getElementById('vip-photo-input');
+async function uploadPhoto() {
+    const guestId   = document.getElementById('photo-guest-select').value;
+    const fileInput = document.getElementById('photo-input');
     const btn       = document.getElementById('btn-upload');
+    if (!guestId)            { showToast('✕  Vui lòng chọn khách VIP', true); return; }
+    if (!fileInput.files[0]) { showToast('✕  Vui lòng chọn ảnh', true); return; }
 
-    if (!empCode)            { showToast('✕  Vui lòng chọn khách VIP', true); return; }
-    if (!fileInput.files[0]) { showToast('✕  Vui lòng chọn ảnh', true);      return; }
-
-    btn.textContent = 'Đang upload...';
-    btn.disabled    = true;
-
+    btn.textContent = 'Đang upload...'; btn.disabled = true;
     const fd = new FormData();
-    fd.append('empCode', empCode);
-    fd.append('photo',   fileInput.files[0]);
-
+    fd.append('guestId', guestId);
+    fd.append('photo', fileInput.files[0]);
     try {
-        const res  = await fetch('/Admin/UploadVipPhoto', { method: 'POST', body: fd });
-        const data = await res.json();
+        const res  = await fetch('/Admin/UploadWelcomeImage', { method: 'POST', body: fd });
+        const data = await res.json().catch(() => ({ success: false, message: `HTTP ${res.status}` }));
         if (data.success) {
             showToast(`✓  ${data.message}`, false);
             fileInput.value = '';
-            document.getElementById('vip-photo-preview').style.display = 'none';
-            document.getElementById('upload-zone').style.display       = 'flex';
-        } else {
-            showToast(`✕  ${data.message}`, true);
-        }
-    } catch (e) {
-        showToast(`✕  Lỗi: ${e.message}`, true);
-    } finally {
-        btn.textContent = '⬆ Upload ảnh';
-        btn.disabled    = false;
-    }
+            document.getElementById('photo-preview').style.display = 'none';
+            document.getElementById('upload-zone').style.display   = 'flex';
+            await loadVipGuests();
+            document.getElementById('photo-guest-select').value = guestId;
+            onPhotoGuestChange();
+        } else { showToast(`✕  ${data.message}`, true); }
+    } catch (e) { showToast(`✕  Lỗi: ${e.message}`, true); }
+    finally { btn.textContent = '⬆ Upload ảnh'; btn.disabled = false; }
 }
 
-loadVipEmployees();
+/* ══════════ Schedules ══════════ */
+async function loadSchedules() {
+    try {
+        const res  = await fetch('/Admin/GetSchedules');
+        const data = await res.json().catch(() => null);
+        if (!data || !Array.isArray(data)) {
+            showToast('✕  Không tải được lịch' + (data?.message ? ': ' + data.message : ''), true);
+            return;
+        }
+        schedules = data;
+        renderSchedules();
+    } catch (e) { showToast('✕  Lỗi tải lịch: ' + e.message, true); }
+}
+
+function renderSchedules() {
+    const listEl = document.getElementById('sched-list');
+    if (!schedules.length) {
+        listEl.innerHTML = '<div style="font-size:12px;color:var(--gray3);text-align:center;padding:8px 0">Chưa có lịch nào</div>';
+        return;
+    }
+    listEl.innerHTML = schedules.map(s => `
+        <div class="sched-item">
+            <div class="sched-item-left">
+                <div class="sched-name">${esc(s.guestName)}</div>
+                <div class="sched-time">${s.startTime} → ${s.endTime}</div>
+            </div>
+            <span class="sched-badge ${s.isActive ? 'on' : 'off'}">${s.isActive ? 'Bật' : 'Tắt'}</span>
+            <button class="btn-del" onclick="deleteSchedule(${s.id})" title="Xóa">✕</button>
+        </div>
+    `).join('');
+}
+
+async function saveSchedule() {
+    const guestId = Number(document.getElementById('sched-guest-select').value);
+    const start   = document.getElementById('sched-start').value;
+    const end     = document.getElementById('sched-end').value;
+    const active  = document.getElementById('sched-active').checked;
+    if (!guestId)      { showToast('✕  Vui lòng chọn khách VIP', true); return; }
+    if (!start || !end){ showToast('✕  Vui lòng chọn khung giờ', true); return; }
+    if (start >= end)  { showToast('✕  Giờ kết thúc phải sau giờ bắt đầu', true); return; }
+    try {
+        const res  = await fetch('/Admin/SaveSchedule', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ guestId, startTime: start, endTime: end, isActive: active })
+        });
+        let data;
+        try { data = await res.json(); } catch { data = { success: false, message: `HTTP ${res.status}` }; }
+        if (data.success) { showToast('✓  Đã thêm lịch', false); await loadSchedules(); }
+        else showToast(`✕  ${data.message || 'Lỗi không xác định'}`, true);
+    } catch (e) { showToast(`✕  Kết nối thất bại (${e.message}) — kiểm tra app đang chạy chưa`, true); }
+}
+
+async function deleteSchedule(id) {
+    if (!confirm('Xóa lịch này?')) return;
+    try {
+        const res  = await fetch(`/Admin/DeleteSchedule?id=${id}`, { method: 'POST' });
+        const data = await res.json().catch(() => ({ success: false, message: `HTTP ${res.status}` }));
+        if (data.success) { showToast('✓  Đã xóa', false); await loadSchedules(); }
+        else showToast(`✕  ${data.message}`, true);
+    } catch (e) { showToast(`✕  Lỗi: ${e.message}`, true); }
+}
+
+function esc(s) {
+    return String(s).replace(/[&<>"']/g, c =>
+        ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+/* ══════════ Init ══════════ */
+async function init() {
+    try { const res = await fetch('/Admin/Config'); cfg = await res.json(); }
+    catch { cfg = {}; }
+    populateForm();
+    initColorSync();
+    initSliders();
+    initTextInputs();
+    updatePreview();
+    scalePreview();
+    await Promise.all([loadVipGuests(), loadSchedules()]);
+}
+
+init();
 </script>
 </body>
 </html>

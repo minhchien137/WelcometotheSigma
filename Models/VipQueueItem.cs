@@ -1,23 +1,30 @@
 namespace WelcometotheSigma.Models;
 
-public class VipQueueItem
+public class VipGuest
 {
     public int Id { get; set; }
-    public string EmpCode { get; set; } = string.Empty;
-    public string DisplayName { get; set; } = string.Empty;
-    public string? PhotoPath { get; set; }
-    public string? PhotoBase64 { get; set; }
-    public DateTime CheckDatetime { get; set; }
-    public string? Area { get; set; }
-    public bool IsDisplay { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public string GuestName { get; set; } = string.Empty;
+    public string? ImageFileName { get; set; }
 }
 
-public class VipEmployee
+public class VipDisplaySchedule
 {
-    public string EmpCode { get; set; } = string.Empty;
-    public string DisplayName { get; set; } = string.Empty;
-    public string? Photo { get; set; }
+    public int Id { get; set; }
+    public int GuestId { get; set; }
+    public string GuestName { get; set; } = string.Empty;
+    public string? ImageFileName { get; set; }
+    public string StartTime { get; set; } = "08:00";
+    public string EndTime { get; set; } = "09:00";
+    public bool IsActive { get; set; } = true;
+}
+
+public class SaveScheduleRequest
+{
+    public int? Id { get; set; }
+    public int GuestId { get; set; }
+    public string StartTime { get; set; } = string.Empty;
+    public string EndTime { get; set; } = string.Empty;
+    public bool IsActive { get; set; } = true;
 }
 
 public class ApiResponse<T>

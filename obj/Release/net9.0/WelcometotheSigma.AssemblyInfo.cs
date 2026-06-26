@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WelcometotheSigma")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+852d12f17227701c141dbc2f9325ee5c78433f1e")]
 [assembly: System.Reflection.AssemblyProductAttribute("WelcometotheSigma")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WelcometotheSigma")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -141,3 +141,4 @@
 /Users/pm/Coldzy/WelcometotheSigma/obj/Release/net9.0/WelcometotheSigma.pdb
 /Users/pm/Coldzy/WelcometotheSigma/obj/Release/net9.0/WelcometotheSigma.genruntimeconfig.cache
 /Users/pm/Coldzy/WelcometotheSigma/obj/Release/net9.0/ref/WelcometotheSigma.dll
+/Users/pm/Coldzy/WelcometotheSigma/obj/Release/net9.0/WelcometotheSigma.sourcelink.json

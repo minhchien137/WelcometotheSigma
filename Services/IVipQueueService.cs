@@ -2,9 +2,12 @@ using WelcometotheSigma.Models;
 
 namespace WelcometotheSigma.Services;
 
-public interface IVipQueueService
+public interface IVipScheduleService
 {
-    Task<VipQueueItem?> GetNextPendingAsync();
-    Task MarkAsDisplayedAsync(int id);
-    Task<List<VipEmployee>> GetVipEmployeesAsync();
+    Task<List<VipGuest>> GetVipGuestsAsync();
+    Task<List<VipDisplaySchedule>> GetSchedulesAsync();
+    Task<int> SaveScheduleAsync(SaveScheduleRequest req);
+    Task DeleteScheduleAsync(int id);
+    Task UpdateGuestImageAsync(int guestId, string imageFileName);
+    Task<VipDisplaySchedule?> GetCurrentActiveAsync();
 }

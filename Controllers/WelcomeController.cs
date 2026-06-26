@@ -1,61 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
-using WelcometotheSigma.Models;
 using WelcometotheSigma.Services;
 
 namespace WelcometotheSigma.Controllers;
 
 public class WelcomeController : Controller
 {
-    private readonly IVipQueueService _vipQueueService;
-    private readonly ILogger<WelcomeController> _logger;
+    private readonly IVipDisplayStateService _displayState;
 
-    public WelcomeController(IVipQueueService vipQueueService, ILogger<WelcomeController> logger)
+    public WelcomeController(IVipDisplayStateService displayState)
     {
-        _vipQueueService = vipQueueService;
-        _logger = logger;
+        _displayState = displayState;
     }
 
     public IActionResult Index() => View();
 
     [HttpGet]
-    public async Task<IActionResult> Next()
+    public IActionResult GetCurrentDisplay()
     {
-        try
-        {
-            var item = await _vipQueueService.GetNextPendingAsync();
-            return Json(new ApiResponse<VipQueueItem>
-            {
-                Success = true,
-                Data    = item
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error fetching next VIP");
-            return Json(new ApiResponse<VipQueueItem>
-            {
-                Success = false,
-                Message = "Error fetching next VIP"
-            });
-        }
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Displayed(int id)
-    {
-        try
-        {
-            await _vipQueueService.MarkAsDisplayedAsync(id);
-            return Json(new ApiResponse<object> { Success = true });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error marking VIP {Id} as displayed", id);
-            return Json(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "Error updating display status"
-            });
-        }
+        var current = _displayState.Current;
+        if (current == null || string.IsNullOrEmpty(current.ImageFileName))
+            return Json(new { imagePath = (string?)null });
+        return Json(new { imagePath = $"/images/{current.ImageFileName}" });
     }
 }

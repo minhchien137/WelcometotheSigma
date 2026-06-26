@@ -3,112 +3,151 @@ using WelcometotheSigma.Models;
 
 namespace WelcometotheSigma.Services;
 
-public class VipQueueService : IVipQueueService
+public class VipScheduleService : IVipScheduleService
 {
-    private readonly string _connectionString;
-    private readonly ILogger<VipQueueService> _logger;
+    private readonly string _conn;
+    private readonly ILogger<VipScheduleService> _logger;
 
-    public VipQueueService(IConfiguration configuration, ILogger<VipQueueService> logger)
+    public VipScheduleService(IConfiguration configuration, ILogger<VipScheduleService> logger)
     {
-        _connectionString = configuration.GetConnectionString("ZkTecoDb")
+        _conn = configuration.GetConnectionString("ZkTecoDb")
             ?? throw new InvalidOperationException("Connection string 'ZkTecoDb' not found.");
         _logger = logger;
     }
 
-    public async Task<VipQueueItem?> GetNextPendingAsync()
+    public async Task<List<VipGuest>> GetVipGuestsAsync()
     {
-        try
-        {
-            await using var conn = new SqlConnection(_connectionString);
-            await conn.OpenAsync();
-
-            await using var cmd = new SqlCommand("sp_GetNextVipToDisplay", conn)
+        var result = new List<VipGuest>();
+        await using var con = new SqlConnection(_conn);
+        await con.OpenAsync();
+        await using var cmd = new SqlCommand(
+            "SELECT Id, GuestName, ImageFileName FROM VipGuest ORDER BY GuestName", con);
+        await using var r = await cmd.ExecuteReaderAsync();
+        while (await r.ReadAsync())
+            result.Add(new VipGuest
             {
-                CommandType = System.Data.CommandType.StoredProcedure
-            };
-
-            await using var reader = await cmd.ExecuteReaderAsync();
-            if (!await reader.ReadAsync())
-                return null;
-
-            var item = new VipQueueItem
-            {
-                Id           = reader.GetInt32(reader.GetOrdinal("id")),
-                EmpCode      = reader.IsDBNull(reader.GetOrdinal("emp_code"))   ? string.Empty : reader.GetString(reader.GetOrdinal("emp_code")),
-                DisplayName  = reader.IsDBNull(reader.GetOrdinal("display_name")) ? string.Empty : reader.GetString(reader.GetOrdinal("display_name")),
-                PhotoPath    = reader.IsDBNull(reader.GetOrdinal("photo_path")) ? null : reader.GetString(reader.GetOrdinal("photo_path")),
-                CheckDatetime = reader.GetDateTime(reader.GetOrdinal("check_datetime")),
-                Area         = reader.IsDBNull(reader.GetOrdinal("area"))       ? null : reader.GetString(reader.GetOrdinal("area")),
-                IsDisplay    = reader.GetBoolean(reader.GetOrdinal("is_display")),
-                CreatedAt    = reader.GetDateTime(reader.GetOrdinal("created_at")),
-            };
-
-            if (!string.IsNullOrEmpty(item.PhotoPath))
-            {
-                var fileName = Path.GetFileName(item.PhotoPath);
-                item.PhotoBase64 = $"/images/{fileName}";
-            }
-
-            return item;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error in GetNextPendingAsync");
-            throw;
-        }
+                Id            = r.GetInt32(0),
+                GuestName     = r.GetString(1),
+                ImageFileName = r.IsDBNull(2) ? null : r.GetString(2)
+            });
+        return result;
     }
 
-    public async Task MarkAsDisplayedAsync(int id)
+    public async Task<List<VipDisplaySchedule>> GetSchedulesAsync()
     {
-        try
-        {
-            await using var conn = new SqlConnection(_connectionString);
-            await conn.OpenAsync();
-
-            await using var cmd = new SqlCommand("sp_MarkVipAsDisplayed", conn)
+        var result = new List<VipDisplaySchedule>();
+        await using var con = new SqlConnection(_conn);
+        await con.OpenAsync();
+        const string sql = @"
+            SELECT s.Id, s.GuestId, g.GuestName, g.ImageFileName,
+                   CONVERT(varchar(5), s.StartTime, 108) AS StartTime,
+                   CONVERT(varchar(5), s.EndTime,   108) AS EndTime,
+                   s.IsActive
+            FROM VipDisplaySchedule s
+            JOIN VipGuest g ON g.Id = s.GuestId
+            ORDER BY s.StartTime";
+        await using var cmd = new SqlCommand(sql, con);
+        await using var r = await cmd.ExecuteReaderAsync();
+        while (await r.ReadAsync())
+            result.Add(new VipDisplaySchedule
             {
-                CommandType = System.Data.CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@id", id);
+                Id            = r.GetInt32(0),
+                GuestId       = r.GetInt32(1),
+                GuestName     = r.GetString(2),
+                ImageFileName = r.IsDBNull(3) ? null : r.GetString(3),
+                StartTime     = r.GetString(4),
+                EndTime       = r.GetString(5),
+                IsActive      = r.GetBoolean(6)
+            });
+        return result;
+    }
 
+    public async Task<int> SaveScheduleAsync(SaveScheduleRequest req)
+    {
+        await using var con = new SqlConnection(_conn);
+        await con.OpenAsync();
+
+        if (req.Id.HasValue && req.Id > 0)
+        {
+            const string sql = @"
+                UPDATE VipDisplaySchedule
+                SET GuestId = @GuestId, StartTime = @StartTime, EndTime = @EndTime, IsActive = @IsActive
+                WHERE Id = @Id";
+            await using var cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@Id",        req.Id.Value);
+            cmd.Parameters.AddWithValue("@GuestId",   req.GuestId);
+            cmd.Parameters.AddWithValue("@StartTime", req.StartTime);
+            cmd.Parameters.AddWithValue("@EndTime",   req.EndTime);
+            cmd.Parameters.AddWithValue("@IsActive",  req.IsActive);
             await cmd.ExecuteNonQueryAsync();
+            return req.Id.Value;
         }
-        catch (Exception ex)
+        else
         {
-            _logger.LogError(ex, "Error in MarkAsDisplayedAsync for id={Id}", id);
-            throw;
+            const string sql = @"
+                INSERT INTO VipDisplaySchedule (GuestId, StartTime, EndTime, IsActive)
+                VALUES (@GuestId, @StartTime, @EndTime, @IsActive);
+                SELECT CAST(SCOPE_IDENTITY() AS INT);";
+            await using var cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@GuestId",   req.GuestId);
+            cmd.Parameters.AddWithValue("@StartTime", req.StartTime);
+            cmd.Parameters.AddWithValue("@EndTime",   req.EndTime);
+            cmd.Parameters.AddWithValue("@IsActive",  req.IsActive);
+            var newId = await cmd.ExecuteScalarAsync();
+            return Convert.ToInt32(newId);
         }
     }
 
-    public async Task<List<VipEmployee>> GetVipEmployeesAsync()
+    public async Task DeleteScheduleAsync(int id)
     {
-        try
-        {
-            var result = new List<VipEmployee>();
-            await using var conn = new SqlConnection(_connectionString);
-            await conn.OpenAsync();
+        await using var con = new SqlConnection(_conn);
+        await con.OpenAsync();
+        await using var cmd = new SqlCommand(
+            "DELETE FROM VipDisplaySchedule WHERE Id = @Id", con);
+        cmd.Parameters.AddWithValue("@Id", id);
+        await cmd.ExecuteNonQueryAsync();
+    }
 
-            await using var cmd = new SqlCommand("sp_GetVipEmployees", conn)
-            {
-                CommandType = System.Data.CommandType.StoredProcedure
-            };
+    public async Task UpdateGuestImageAsync(int guestId, string imageFileName)
+    {
+        await using var con = new SqlConnection(_conn);
+        await con.OpenAsync();
+        await using var cmd = new SqlCommand(
+            "UPDATE VipGuest SET ImageFileName = @ImageFileName WHERE Id = @Id", con);
+        cmd.Parameters.AddWithValue("@Id",            guestId);
+        cmd.Parameters.AddWithValue("@ImageFileName", imageFileName);
+        await cmd.ExecuteNonQueryAsync();
+    }
 
-            await using var reader = await cmd.ExecuteReaderAsync();
-            while (await reader.ReadAsync())
-            {
-                result.Add(new VipEmployee
-                {
-                    EmpCode     = reader.IsDBNull(reader.GetOrdinal("emp_code"))     ? string.Empty : reader.GetString(reader.GetOrdinal("emp_code")),
-                    DisplayName = reader.IsDBNull(reader.GetOrdinal("display_name")) ? string.Empty : reader.GetString(reader.GetOrdinal("display_name")),
-                    Photo       = reader.IsDBNull(reader.GetOrdinal("photo"))        ? null         : reader.GetString(reader.GetOrdinal("photo")),
-                });
-            }
-            return result;
-        }
-        catch (Exception ex)
+    public async Task<VipDisplaySchedule?> GetCurrentActiveAsync()
+    {
+        var now = DateTime.Now.ToString("HH:mm:ss");
+        await using var con = new SqlConnection(_conn);
+        await con.OpenAsync();
+        const string sql = @"
+            SELECT TOP 1 s.Id, s.GuestId, g.GuestName, g.ImageFileName,
+                   CONVERT(varchar(5), s.StartTime, 108) AS StartTime,
+                   CONVERT(varchar(5), s.EndTime,   108) AS EndTime,
+                   s.IsActive
+            FROM VipDisplaySchedule s
+            JOIN VipGuest g ON g.Id = s.GuestId
+            WHERE s.IsActive = 1
+              AND s.StartTime <= CAST(@Now AS TIME)
+              AND s.EndTime   >= CAST(@Now AS TIME)
+            ORDER BY s.StartTime";
+        await using var cmd = new SqlCommand(sql, con);
+        cmd.Parameters.AddWithValue("@Now", now);
+        await using var r = await cmd.ExecuteReaderAsync();
+        if (!await r.ReadAsync()) return null;
+        return new VipDisplaySchedule
         {
-            _logger.LogError(ex, "Error in GetVipEmployeesAsync");
-            throw;
-        }
+            Id            = r.GetInt32(0),
+            GuestId       = r.GetInt32(1),
+            GuestName     = r.GetString(2),
+            ImageFileName = r.IsDBNull(3) ? null : r.GetString(3),
+            StartTime     = r.GetString(4),
+            EndTime       = r.GetString(5),
+            IsActive      = r.GetBoolean(6)
+        };
     }
 }
